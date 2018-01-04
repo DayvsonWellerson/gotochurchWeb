@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js" lang="{{=T.accepted_language or 'en'}}"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge{{=not request.is_local and ',chrome=1' or ''}}">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{=response.title or request.application}}</title>
+    
+    <meta name="application-name" content="{{=request.application}}">
+    
+    <meta name="google-site-verification" content="">
+    <!-- include stylesheets -->
+    <link rel="stylesheet" href="{{#=URL('static','css/bootstrap.min.css')}}"/>
+    <link rel="stylesheet" href="{{#=URL('static','css/web2py-bootstrap3.css')}}"/>
+    <link rel="shortcut icon" href="{{=URL('static','images/logo.png')}}" type="image/png">
+    <link rel="apple-touch-icon" href="{{=URL('static','images/logo.png')}}">
+    <link rel="stylesheet" type="text/css" href="{{=URL('static','dist/components/reset.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{=URL('static','dist/components/site.css')}}">
+
+    <link rel="stylesheet" href="{{=URL('static','dist/components/container.css')}}">
+    <link rel="stylesheet" href="{{=URL('static','dist/components/grid.css')}}">
+    <link rel="stylesheet" href="{{=URL('static','dist/components/header.css')}}">
+    <link rel="stylesheet" href="{{=URL('static','dist/components/image.css')}}">
+    <link rel="stylesheet" href="{{=URL('static','dist/components/menu.css')}}">
+
+    <link rel="stylesheet"  href="{{=URL('static','dist/components/divider.css')}}">
+    <link rel="stylesheet"  href="{{=URL('static','dist/components/segment.css')}}">
+    <link rel="stylesheet"  href="{{=URL('static','dist/components/form.css')}}">
+    <link rel="stylesheet"  href="{{=URL('static','dist/components/input.css')}}">
+    <link rel="stylesheet"  href="{{=URL('static','dist/components/button.css')}}">
+    <link rel="stylesheet"  href="{{=URL('static','dist/components/list.css')}}">
+    <link rel="stylesheet"  href="{{=URL('static','dist/components/message.css')}}">
+    <link rel="stylesheet"  href="{{=URL('static','dist/components/icon.css')}}">
+    <link rel="stylesheet"  href="{{=URL('static','dist/components/dropdown.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{=URL('static','dist/semantic.min.css')}}">
+
+    <script src="{{=URL('static','js/jquery-3.2.1.min.js')}}"></script>
+    <script src="{{=URL('static','dist/components/form.js')}}"></script>
+    <script src="{{=URL('static','dist/components/dropdown.js')}}"></script>
+    <script src="{{=URL('static','dist/components/transition.js')}}"></script>
+    <script src="{{=URL('static','dist/components/visibility.js')}}"></script>
+    <script src="{{=URL('static','dist/semantic.min.js')}}"></script>
+
+        
+        <style type="text/css">
+          .error{
+            color: red !important;
+          }
+        </style>
+        
+        
+        
+        
+
+        
+        
+        
+        
+        
+    
+    <script src="{{=URL('static','js/modernizr-2.8.3.min.js')}}"></script>
+    <!--[if lt IE 9]>
+        <script src="{{=URL('static','js/respond-1.4.2.min.js')}}"></script>
+        <![endif]-->
+    <!-- Favicons -->
+  </head>
+  <body style="background: #ececec;">
+    <script>
+        $(document).ready(function(){
+            $('.dropdown')
+            .dropdown({
+                // you can use any ui transition
+                transition: 'drop'
+            })
+            ;
+        });
+        </script>
+            
+            <!-- BARRA LATERAL -->
+            
+        <div class="ui main container" style="margin-top: 60px;">
+        {{if response.flash:}}
+        <div class="ui positive message">
+          <i class="close icon"></i>
+          <div class="header">
+            Sucesso!
+          </div>
+          <p>{{=T(response.flash)}}</p>
+        </div>
+        <script type="text/javascript">
+          $('.message .close').on('click', function() {
+            $(this).closest('.message').transition('fade');
+          });
+        </script>
+        {{pass}}
+        {{block center}}
+        {{include}}
+        {{end}}
+        </div>
+    
+        <script type="text/javascript">
+          function removeConfirmar() {
+            $('.ui.basic.modal').modal('hide',function() {
+              $('#confirm').remove();  
+            });
+          }
+          function confirmar(url, icon, message){
+            var html = '<div id="confirm" class="ui basic modal">'+
+                        '<div class="ui icon header">'+
+                         ' <i class="'+icon+' icon"></i>'+
+                          'ATENÇÃO!'+
+                        '</div>'+
+                        '<div class="content" style="text-align:center;">'+
+                          '<p><h3>'+message+'<h3></p>'+
+                        '</div>'+
+                        '<div class="actions">'+
+                          '<div class="ui red basic cancel inverted button" onclick="removeConfirmar()">'+
+                            '<i class="remove icon"></i>'+
+                            'Não'+
+                          '</div>'+
+                          '<a class="ui green ok inverted button" href="'+url+'">'+
+                            '<i class="checkmark icon"></i>'+
+                            'Sim'+
+                          '</a>'+
+                        '</div>'+
+                      '</div>';
+
+            $('body').append(html);
+            $('.ui.basic.modal').modal('show');
+          }
+        </script>
+      
+
+    <!-- The javascript =============================== -->
+    <script src="{{#=URL('static','js/bootstrap.min.js')}}"></script>
+    <script src="{{#=URL('static','js/web2py-bootstrap3.js')}}"></script>
+    <!-- Analytics ==================================== -->
+    <script src="{{#=URL('static','js/analytics.min.js')}}"></script>
+    
+  </body>
+</html>

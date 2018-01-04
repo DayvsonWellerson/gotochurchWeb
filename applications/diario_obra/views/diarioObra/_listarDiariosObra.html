@@ -1,0 +1,162 @@
+{{extend 'lay_obra.html'}}
+
+{{block center}}
+    <style>
+        .f-pesquisa{
+            float: right; top: 0; padding: 10px; position: absolute; right: 0px;
+        }
+    </style>
+	<div class="ui segment">
+        <h3>Diarios de Obra Pendentes</h3>
+        <br>
+        <div class="ui cards">
+        {{if tipo == adm:}}
+        {{for diarioPendente in diariosPendentes:}}
+        
+            <div class="card">
+                <div class="content">
+                    <img class="right floated mini ui image" src="">
+                    <div class="header">
+                        {{obra = db(Obra.id == diarioPendente.obra).select(Obra.nome)}}
+                        <span class="meta">Obra: </span> {{=obra[0].nome}}<br><br>
+                    </div>
+                    <div >
+                        <span class="meta">Data de Geração: </span> {{=diarioPendente.created_on}}<br><br>
+                    </div>
+                    <div class="description">
+                        {{=diarioPendente.ser_executado}}
+                    </div>
+                </div>
+                {{if tipo == funcionario or tipo == adm:}}
+                <div class="extra content">
+                    <div class="ui two buttons">
+                        <a class="ui basic blue button" href="{{=URL(a='diario_obra', c='diarioObra', f='_verDiarioObra', args=[diarioPendente.id])}}">Visualizar</a>
+                        <a class="ui basic green button" href="{{=URL(a='diario_obra', c='diarioObra', f='_editarDiario', args=[diarioPendente.id])}}">Editar</a>
+                    </div>
+                </div>
+                {{else:}}
+                <div class="extra content">
+                    <div class="ui two buttons">
+                        <a class="ui basic blue button" href="{{=URL(a='diario_obra', c='diarioObra', f='_verDiarioObra', args=[diarioPendente.id])}}">Visualizar</a>
+                    </div>
+                </div>
+                {{pass}}
+            </div>
+        
+        {{pass}}
+        {{else:}}
+            {{for diario in diarios:}}
+                {{if diario.validacao == False:}}
+                    <div class="card">
+                    <div class="content">
+                        <img class="right floated mini ui image" src="">
+                        <div class="header">
+                        {{obra = db(Obra.id == diario.obra).select(Obra.nome)}}
+                            <span class="meta">Obra: </span> {{=obra[0].nome}}<br><br>
+                        </div>
+                        <div>
+                            <span class="meta">Data de Geração: </span> {{=diario.created_on}}<br><br>
+                        </div>
+                        <div class="description">
+                        {{=diario.ser_executado}}
+                        </div>
+                    </div>
+                    {{if tipo == funcionario or tipo == adm:}}
+                        <div class="extra content">
+                            <div class="ui two buttons">
+                                <a class="ui basic blue button"
+                                   href="{{=URL(a='diario_obra', c='diarioObra', f='_verDiarioObra', args=[diario.id])}}">Visualizar</a>
+                                <a class="ui basic green button"
+                                   href="{{=URL(a='diario_obra', c='diarioObra', f='_editarDiario', args=[diario.id])}}">Editar</a>
+                            </div>
+                        </div>
+                    {{else:}}
+                        <div class="extra content">
+                            <div class="ui two buttons">
+                                <a class="ui basic blue button"
+                                   href="{{=URL(a='diario_obra', c='diarioObra', f='_verDiarioObra', args=[diario.id])}}">Visualizar</a>
+                            </div>
+                        </div>
+                    {{pass}}
+                    </div>
+                {{else:}}
+                    <h4 style="text-align: center; padding: 20px;">Nenhum Diário de Obra Pendente</h4>
+                {{pass}}
+            {{pass}}
+        {{pass}}
+        </div>
+    </div>
+    <div class="ui segment">
+        <h3>Todos os Diarios de Obra</h3>
+        <br>
+        <div id="lp" class="f-pesquisa">
+            <h4>Listar por:</h4>
+            <form action="" method="get" class="ui form">
+                <div class="two fields">
+                    <div class="field">
+                        <select class="ui fluid dropdown" name="listaP">
+                            <option value="">Escolher...</option>
+                            <option value="1">Obra</option>
+                            <option value="2">Data</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <input type="submit" class="ui primary button" value="Listar">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="ui cards" style="margin-top: 55px;">
+        {{for diario in diarios:}}
+        
+            <div class="card">
+                <div class="content">
+                    <img class="right floated mini ui image" src="">
+                    <div class="header">
+                        {{obra = db(Obra.id == diario.obra).select(Obra.nome)}}
+                        <span class="meta">Obra: </span> {{=obra[0].nome}}<br><br>
+                    </div>
+                    <div >
+                        <span class="meta">Data de Geração: </span> {{=diario.created_on}}<br><br>
+                    </div>
+                    <div class="description">
+                        {{=diario.ser_executado}}
+                    </div>
+                </div>
+                {{if tipo == funcionario or tipo == adm:}}
+                <div class="extra content">
+                    <div class="ui two buttons">
+                        <a class="ui basic blue button" href="{{=URL(a='diario_obra', c='diarioObra', f='_verDiarioObra', args=[diario.id])}}">Visualizar</a>
+                        <a class="ui basic green button" href="{{=URL(a='diario_obra', c='diarioObra', f='_editarDiario', args=[diario.id])}}">Editar</a>
+                    </div>
+                </div>
+                {{else:}}
+                <div class="extra content">
+                    <div class="ui two buttons">
+                        <a class="ui basic blue button" href="{{=URL(a='diario_obra', c='diarioObra', f='_verDiarioObra', args=[diario.id])}}">Visualizar</a>
+                    </div>
+                </div>
+                {{pass}}
+            </div>
+        
+        {{pass}}
+        </div>
+    </div>
+    <script>
+        function listaPor(){
+            if(window.innerWidth < 565){
+                $("#lp").removeClass("f-pesquisa");
+            }else{
+                $("#lp").addClass("f-pesquisa");
+            }
+        }
+
+        $(document).ready(function(){
+            listaPor();
+        });
+
+        $(window).resize(function(){
+            listaPor();
+        });
+    </script>
+{{end}}

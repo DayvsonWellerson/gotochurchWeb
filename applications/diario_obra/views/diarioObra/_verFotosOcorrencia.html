@@ -1,0 +1,16 @@
+{{extend 'lay_normal.html'}}
+{{if len(fotos) > 0:}}
+<div class="ui segment">
+  <h3>Fotos Adicionadas</h3>
+  <div class="ui medium images">
+  {{for foto in fotos:}}
+    <img src="{{=URL('default', 'download', args=foto.imagem)}}">
+  {{pass}}
+  </div>
+</div>
+<br>
+{{else:}}
+<div class="ui segment">
+	<h3>Nenhuma Foto Adicionada!</h3>
+</div>
+{{pass}}

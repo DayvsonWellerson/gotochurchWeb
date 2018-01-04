@@ -1,0 +1,23 @@
+{{extend 'lay_normal.html'}}
+      {{=formFoto.custom.begin}}
+
+      <div class="field">
+        {{=formFoto.custom.widget.imagem}}
+      </div>
+
+      {{=formFoto.custom.submit}}
+      {{=formFoto.custom.end}}
+      
+<br><br>
+{{#=fotos}}
+{{if len(fotos) > 0:}}
+<div class="ui segment">
+  <h3>Fotos Adicionadas</h3>
+  <div class="ui medium images">
+  {{for foto in fotos:}}
+    <img src="{{=URL('default', 'download', args=foto.imagem)}}">
+  {{pass}}
+  </div>
+</div>
+<br>
+{{pass}}

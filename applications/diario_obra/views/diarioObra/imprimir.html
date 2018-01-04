@@ -1,0 +1,330 @@
+{{extend 'lay_normal.html'}}
+
+{{=form.custom.begin}}
+<style type="text/css">
+	#ler{
+		/*border: none;*/
+		-webkit-user-select: none; /* Chrome, Opera, Safari */
+	    -moz-user-select: none; /* Firefox 2+ */
+	    -ms-user-select: none; /* IE 10+ */
+	    user-select: none;
+	}
+	.apenasLer{
+		-webkit-user-select: none; /* Chrome, Opera, Safari */
+	    -moz-user-select: none; /* Firefox 2+ */
+	    -ms-user-select: none; /* IE 10+ */
+	    user-select: none;
+	}
+
+	input, select, textarea{
+		pointer-events: none;
+	}
+
+	.True{
+		background-color: #d1ffc9 !important;
+	}
+
+	.False{
+		background-color: #ffc0c0 !important;
+	}
+
+</style>
+<div id="ler">
+<!--<h2 class="ui dividing header">Visualizar Diário de Obra</h2>-->
+<div id="imprimir">
+<div class="field">
+    <div class="ui segment">
+    	<div class="field">
+    		<img class="ui medium centered image" src="{{=URL('static', 'images/img_logo1.png')}}">
+    	</div>
+    	<div class="field">
+    		<label class="ui dividing header" >Número RDO: {{=numRdo}}</label>
+    	</div>
+	    <div class="three fields">
+	      <div class="field">
+	      	<label>Obra</label>
+            {{=form.custom.widget.obra}}
+            <input id="txobra" type="text">
+            
+	      </div>
+	      <div class="field">
+	      	<label>Serviço Executado</label>
+	        {{=form.custom.widget.ser_executado}}
+	      </div>
+	      <div class="field">
+	      	<label>Cliente</label>
+            {{=form.custom.widget.cliente}}
+            <input id="txcliente" type="text">
+          </div>
+          <script>
+                $(document).ready(function(){
+                    
+                    var opts = document.getElementById('diario_obra_obra');
+                    var valor = opts.options[opts.selectedIndex].innerText;
+                    $("#txobra").val(valor);
+                    $("#diario_obra_obra").hide();
+                    
+
+                    var opts2 = document.getElementById('diario_obra_cliente');
+                    var valor2 = opts2.options[opts2.selectedIndex].innerText;
+                    $("#txcliente").val(valor2);
+                    $("#diario_obra_cliente").hide();
+
+                    window.print();
+                    
+                });
+            </script>
+	    </div>
+    </div>
+</div>
+
+
+<div class="field">
+	<div class="ui segment">
+		<div class="four fields">
+	      <div class="field">
+	      	<label>Dia da Semana</label>
+	        {{=form.custom.widget.dia_semana}}
+	      </div>
+	      <div class="field">
+	      	<label>Efetivo Profissional</label>
+	        {{=form.custom.widget.efetivo_profissional}}
+	      </div>
+	      <div class="field">
+	      	<label>Efetivo Servente</label>
+	        {{=form.custom.widget.efetivo_servente}}
+	      </div>
+	      <div class="field">
+	      	<label>Clima</label>
+	        {{=form.custom.widget.tempo}}
+	      </div>
+	    </div>
+	</div>
+</div>
+<script type="text/javascript">
+	var id = 0;
+	function adicionarOcorrencia(){
+		var html = '<div id="i'+id+'" class="fields">';
+		html += '<div class="fifteen wide field" >';
+		html += '<input class="oco" id="diario_obra_ocorrencia_diaria" name="ocorrencia" type="text" value="">';
+		html += '</div>';
+		html += '<div class="four wide field">';
+		//html += 	'<div class="ui blue icon button" data-tooltip="Adicionar Fotos" onclick="addFoto()">';
+		//html += 		'<i class="photo icon"></i>';
+		//html += 	'</div>';
+		html += 	'<div class="ui red icon button" data-tooltip="Remover ocorrêcia" onclick="removeOcorrencia('+id+')">';
+		html += 		'<i class="minus icon"></i>';
+		html += 	'</div>';
+		html += '</div>';
+		html +='</div>'
+		$("#listaocorrencias").append(html);
+		id++;
+	}
+
+	function removeOcorrencia(id) {
+		$('#i'+id).remove();
+	}
+
+	function concluiRecusa(id){
+		var msg = $('#msgR').val();
+		$('#msgR').val('');
+		$.ajax({
+			url: $('#urlRecusa').val()+'?id='+id+'&mensagem='+msg
+		}).done(function(){
+			$('.o'+id).css("background-color", "#ffc0c0");
+		});
+		
+	}
+
+	function recusarOcorrência(id){
+		$('.ui.modal.recusa').modal('show');
+		$('#btOk').attr('valor', id);
+		$('#tit_oco').empty();
+		$('#tit_oco').append(' <i class="angle right icon"></i> '+$('.o'+id).val());
+	}
+
+	function validarOcorrencia(id){
+		$.ajax({
+			//url: 'diarioObra/_validaOcorrencia/'+id
+			url: $('#urlValida').val()+'/'+id
+		}).done(function(){
+			$('.o'+id).css("background-color", "#d1ffc9");
+		});
+	}
+
+	function verMensagem(msg, id){
+		$('.ui.modal.msg').modal('show');
+		$('#tit_oco_msg').empty();
+		$('#tit_oco_msg').append(' <i class="angle right icon"></i> '+$('.o'+id).val());
+		$('#msgDeRecusa').val(msg);
+	}
+</script>
+<input id="urlValida" type="hidden" value="{{=URL(a='diario_obra', c='diarioObra', f='_validaOcorrencia')}}">
+<input id="urlRecusa" type="hidden" value="{{=URL(a='diario_obra', c='diarioObra', f='_recusaOcorrencia')}}">
+<div class="field">
+	<div class="ui segment">
+		<div id="listaocorrencias" class="field">
+			<label>Ocorrências</label>
+			
+			<!--<div class="right" style=" float: right; position: relative; top: -30px; right: -10px; display: none;">
+				<div class="ui green icon button" data-tooltip="Adicionar nova ocorrêcia" onclick="adicionarOcorrencia()">
+					<i class="plus icon"></i>
+				</div>
+			</div>-->
+			{{controle = 0}}
+			{{for ocorrencia in ocorrencias:}}
+			{{if controle == 0:}}
+			<div class="fields">
+				<div class="fifteen wide field">
+					<input class="oco o{{=ocorrencia.id}} {{=ocorrencia.validacao}}" id="diario_obra_ocorrencia_diaria" name="ocorrencia" type="text" value="{{=ocorrencia.descricao}}">
+				</div>
+				<!--<div class="four wide field">
+			        <div class="ui blue icon button" data-tooltip="Ver Fotos" valor="{{=URL(a='diario_obra', c='diarioObra', f='_verFotosOcorrencia', args=[ocorrencia.id, arg])}}" onclick="addFoto($(this).attr('valor'), '{{=ocorrencia.descricao}}')">
+						<i class="photo icon"></i>
+					</div>
+					{{if ocorrencia.validacao == None:}}
+					<div class="ui green icon button" data-tooltip="Validar" onclick="validarOcorrencia({{=ocorrencia.id}})">
+						<i class="checkmark icon"></i>
+					</div>
+					<div class="ui red icon button" valordata-tooltip="Recusar" onclick="recusarOcorrência({{=ocorrencia.id}})">
+						<i class="remove icon"></i>
+					</div>
+					{{elif ocorrencia.validacao == False:}}
+					<div class="ui orange icon button" data-tooltip="Ver" onclick="verMensagem('{{=ocorrencia.msg_recusa}}', {{=ocorrencia.id}})">
+						<i class="unhide icon"></i>
+					</div>
+					{{pass}}
+			    </div>-->
+			</div>
+			
+			{{else:}}
+			<div class="fields">
+				<div class="fifteen wide field">
+					<input class="oco o{{=ocorrencia.id}} {{=ocorrencia.validacao}}" id="diario_obra_ocorrencia_diaria" name="ocorrencia" type="text" value="{{=ocorrencia.descricao}}">
+				</div>
+				<!--<div class="four wide field">
+			        <div class="ui blue icon button" data-tooltip="Ver Fotos" valor="{{=URL(a='diario_obra', c='diarioObra', f='_verFotosOcorrencia', args=[ocorrencia.id, arg])}}" onclick="addFoto($(this).attr('valor'), '{{=ocorrencia.descricao}}')">
+						<i class="photo icon"></i>
+					</div>
+					{{if ocorrencia.validacao == None:}}
+					<div class="ui green icon button" data-tooltip="Validar" onclick="validarOcorrencia({{=ocorrencia.id}})">
+						<i class="checkmark icon"></i>
+					</div>
+					<div class="ui red icon button" data-tooltip="Recusar" onclick="recusarOcorrência({{=ocorrencia.id}})">
+						<i class="remove icon"></i>
+					</div>
+					{{elif ocorrencia.validacao == False:}}
+					<div class="ui orange icon button" data-tooltip="Ver" onclick="verMensagem('{{=ocorrencia.msg_recusa}}', {{=ocorrencia.id}})">
+						<i class="unhide icon"></i>
+					</div>
+					{{pass}}
+			    </div>-->
+			</div>
+			{{pass}}
+			{{controle = controle + 1}}
+			{{pass}}
+		</div>
+	</div>
+</div>
+<input type="hidden" name="todasOcorrencias" id="todasOcorrencias">
+<div class="field">
+	<div class="ui segment">
+		<div class="field">
+			<label>Observações</label>
+			{{=form.custom.widget.observaceos}}
+		</div>
+	</div>
+</div>
+
+</div>
+<br>
+</div>
+{{#=form.custom.submit}}
+
+{{=form.custom.end}}
+<script type="text/javascript">
+	function imprimir(){
+		var conteudo = document.getElementById('imprimir').innerHTML, tela_impressao = window.open("{{=URL(a='diario_obra', c='diarioObra', f='imprimir')}}");
+		var c = document.getElementById('h').innerHTML;
+		var c2 = document.getElementById('b').innerHTML;
+		tela_impressao.document.write(c);
+		tela_impressao.document.write(conteudo);
+		//tela_impressao.window.print();
+		//tela_impressao.window.close();
+	}
+	
+	ocorrencias = [];
+
+	$('#formDiarioObra').submit(function(){
+		$('.oco').each(function(){
+			var valor = $(this).val();
+			console.log(valor);
+			ocorrencias.push(valor);
+		});
+		console.log(ocorrencias);
+		ocorrencias = JSON.stringify(ocorrencias);
+		$('#todasOcorrencias').val(ocorrencias);
+		console.log(ocorrencias);
+		//return false;
+	});
+
+	function addFoto(valor, txt) {
+		$("#i_fotos").attr("src",valor);
+		$("#tit_foto").empty();
+		$("#tit_foto").append(txt);
+		$('.ui.modal.foto').modal('show');
+	}
+</script>
+
+<br><br>
+
+<br><br>
+
+
+
+<!--<div id="addFoto" class="ui modal">
+  
+</div>-->
+
+<div class="ui modal foto">
+  <div class="header">Fotos - <span id="tit_foto"></span></div>
+  <div class="content">
+    <iframe id="i_fotos" src="" width="100%" height="100%" frameborder="0" style="min-height: 300px; border-radius: 5px;"></iframe>
+  </div>
+  <div class="actions">
+    <div class="ui cancel button">Fechar</div>
+  </div>
+</div>
+
+<div class="ui modal recusa">
+  <div class="header">Informe o motivo da recusa <span id="tit_oco"></span></div>
+  <div class="content">
+    <div class="ui form">
+	  <div class="field">
+	    <label></label>
+	    <textarea id="msgR"></textarea>
+	  </div>
+	</div>
+  </div>
+  <div class="actions">
+    <div id="btOk" class="ui positive green button" valor="" onclick="concluiRecusa($(this).attr('valor'))">Concluir</div>
+    <div class="ui cancel red button">Cancelar</div>
+  </div>
+</div>
+
+
+<div class="ui modal msg">
+  <div class="header">Motivo da recusa <span id="tit_oco_msg"></span></div>
+  <div class="content">
+    <div class="ui form">
+	  <div class="field apenasLer">
+	    <label></label>
+	    <textarea id="msgDeRecusa" readonly=""></textarea>
+	  </div>
+	</div>
+  </div>
+  <div class="actions">
+    <!--<div id="btOk" class="ui positive green button" valor="" onclick="concluiRecusa($(this).attr('valor'))">Concluir</div>-->
+    <div class="ui cancel button">Fechar</div>
+  </div>
+</div>

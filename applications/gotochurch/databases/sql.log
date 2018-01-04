@@ -1,0 +1,92 @@
+timestamp: 2017-08-08T14:59:32.145332
+CREATE TABLE "auth_user"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "first_name" CHAR(128),
+    "last_name" CHAR(128),
+    "email" CHAR(512),
+    "password" CHAR(512),
+    "registration_key" CHAR(512),
+    "reset_password_key" CHAR(512),
+    "registration_id" CHAR(512)
+);
+success!
+timestamp: 2017-08-08T14:59:32.246496
+CREATE TABLE "auth_group"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "role" CHAR(512),
+    "description" TEXT
+);
+success!
+timestamp: 2017-08-08T14:59:32.406792
+CREATE TABLE "auth_membership"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "user_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "group_id" INTEGER REFERENCES "auth_group" ("id") ON DELETE CASCADE  
+);
+success!
+timestamp: 2017-08-08T14:59:32.529701
+CREATE TABLE "auth_permission"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "group_id" INTEGER REFERENCES "auth_group" ("id") ON DELETE CASCADE  ,
+    "name" CHAR(512),
+    "table_name" CHAR(512),
+    "record_id" INTEGER
+);
+success!
+timestamp: 2017-08-08T14:59:32.654289
+CREATE TABLE "auth_event"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "time_stamp" TIMESTAMP,
+    "client_ip" CHAR(512),
+    "user_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "origin" CHAR(512),
+    "description" TEXT
+);
+success!
+timestamp: 2017-08-08T14:59:32.755223
+CREATE TABLE "auth_cas"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "user_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "created_on" TIMESTAMP,
+    "service" CHAR(512),
+    "ticket" CHAR(512),
+    "renew" CHAR(1)
+);
+success!
+timestamp: 2017-10-31T21:02:33.545716
+CREATE TABLE "setor"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "numero" INTEGER,
+    "coordenador" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  
+);
+success!
+timestamp: 2017-10-31T21:02:33.729399
+CREATE TABLE "area"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "setor" INTEGER REFERENCES "setor" ("id") ON DELETE CASCADE  ,
+    "coordenador" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  
+);
+success!
+timestamp: 2017-10-31T21:02:33.851804
+CREATE TABLE "congregacao"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "nome" CHAR(512),
+    "coordenador" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "fotos" CHAR(512),
+    "qtd_assentos" INTEGER,
+    "rua" CHAR(512),
+    "bairro" CHAR(512),
+    "cidade" CHAR(512),
+    "complemento" CHAR(512),
+    "numero" CHAR(512),
+    "latitude" CHAR(512),
+    "logitude" CHAR(512)
+);
+success!
+timestamp: 2017-11-15T19:10:45.271235
+ALTER TABLE "auth_user" ADD "tipo" INTEGER;
+timestamp: 2017-11-15T19:10:45.790783
+ALTER TABLE "auth_user" ADD "cpf" CHAR(512);
+timestamp: 2017-11-15T19:10:46.246529
+ALTER TABLE "auth_user" ADD "senha" CHAR(512);
+success!

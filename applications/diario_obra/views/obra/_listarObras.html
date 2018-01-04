@@ -1,0 +1,237 @@
+{{extend 'lay_obra.html'}}
+<style>
+  .pesquisa{
+    margin-top: 4%;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+  .w100{
+    width: 100%;
+  }
+  .esconder{
+    display: none !important;
+  }
+</style>
+{{if auth.user.tipo != 2:}}
+<input type="hidden" id="novaobra" name="" value="{{=URL(a='diario_obra', c='obra', f='_novaObra')}}">
+{{pass}}
+<div id="cartao2" class="ui two cards link">
+  {{if auth.user.tipo != 2:}}
+	<div class="card blue" onclick="window.location = $('#novaobra').val();">
+		<div class="content">
+		    <div class="header">Cadastrar nova Obra</div>
+		    <div class="meta"></div>
+		    <div class="description right" style="text-align: right;">
+		        <i class="plus huge icon"></i>
+		    </div>
+		</div>
+	</div>
+  {{pass}}
+  <!-- Pesquisa -->
+  
+  <div id="d-perquisa" class="ui search right pesquisa card">
+    <form>
+      <div class="ui icon input">
+        <h3 style="margin: 6px 5px 0 0;">Pesquisar Obras </h3><br>
+        <input class="prompt" type="text" name="nome" placeholder="Informe o nome..." style="border-radius: 5px;">
+        <i class="search icon"></i>
+      </div>
+      <input type="submit" name="" class="ui blue icon button" value="Perquisar">
+    </form>
+  </div>
+</div>
+{{if auth.user.tipo == 2:}}
+<br>
+
+<table class="ui celled striped table">
+  <thead>
+    <tr>
+    <th colspan="5">
+      Lista de Obras
+    </th>
+  </tr>
+  <tr id="tr-nomes">
+    <th>Nome da Obra</th>
+    <th>Responsavel</th>
+    <th>Cliente</th>
+    <th>Data de Inicio</th>
+    <th>Data de Finalização</th>
+  </tr>
+  </thead>
+  <tbody>
+  {{controle = 0}}
+  {{for obra in listaObras:}}
+    <tr>
+      <td class="collapsing">
+        <i class="building icon"></i> {{=obra.nome}}
+      </td>
+      {{usuario_responsavel = db(db.auth_user.id == obra.responsavel).select(db.auth_user.first_name, db.auth_user.last_name)}}
+      <td>{{=usuario_responsavel[0].first_name+ ' ' +usuario_responsavel[0].last_name}}</td>
+      {{usuario_cliente = db(db.auth_user.id == obra.cliente).select(db.auth_user.first_name, db.auth_user.last_name)}}
+      <td>{{=usuario_cliente[0].first_name+ ' ' +usuario_cliente[0].last_name}}</td>
+      <td>
+        {{if obra.data_inicio == None or obra.data_inicio == '':}}
+        {{='Não Informado'}}
+        {{else:}}
+
+          {{if int(obra.data_inicio.day) < 10:}}
+          {{='0'+str(obra.data_inicio.day)+'-'}}
+          {{else:}}
+          {{=str(obra.data_inicio.day)+'-'}}
+          {{pass}}
+
+          {{if int(obra.data_inicio.month) < 10:}}
+          {{='0'+str(obra.data_inicio.month)+'-'}}
+          {{else:}}
+          {{=str(obra.data_inicio.month)+'-'}}
+          {{pass}}
+
+        {{=str(obra.data_inicio.year)}}
+      	{{pass}}
+     </td>
+     <td>
+        {{if obra.data_final == None or obra.data_final == '':}}
+        {{='Não Informado'}}
+        {{else:}}
+          {{if int(obra.data_final.day) < 10:}}
+          {{='0'+str(obra.data_inicio.day)+'-'}}
+          {{else:}}
+          {{=str(obra.data_final.day)+'-'}}
+          {{pass}}
+
+          {{if int(obra.data_final.month) < 10:}}
+          {{='0'+str(obra.data_final.month)+'-'}}
+          {{else:}}
+          {{=str(obra.data_final.month)+'-'}}
+          {{pass}}
+      	{{=obra.data_final.year}}
+      	{{pass}}
+     </td>
+    </tr>
+    {{controle = controle + 1}}
+  {{pass}}
+  </tbody>
+</table>
+
+
+
+{{else:}}
+
+
+
+
+<table class="ui celled striped table">
+  <thead>
+    <tr>
+    <th colspan="6">
+      Lista de Obras
+    </th>
+  </tr>
+  <tr id="tr-nomes">
+  	<th>Nome da Obra</th>
+  	<th>Responsavel</th>
+  	<th>Cliente</th>
+  	<th>Data de Inicio</th>
+  	<th>Data de Finalização</th>
+  	<th></th>
+  </tr>
+  </thead>
+  <tbody>
+  {{controle = 0}}
+  {{for obra in listaObras:}}
+    <tr>
+      <td class="collapsing">
+        <i class="building icon"></i> {{=obra.nome}}
+      </td>
+      {{usuario_responsavel = db(db.auth_user.id == obra.responsavel).select(db.auth_user.first_name, db.auth_user.last_name)}}
+      <td>{{=usuario_responsavel[0].first_name+ ' ' +usuario_responsavel[0].last_name}}</td>
+      {{usuario_cliente = db(db.auth_user.id == obra.cliente).select(db.auth_user.first_name, db.auth_user.last_name)}}
+      <td>{{=usuario_cliente[0].first_name+ ' ' +usuario_cliente[0].last_name}}</td>
+      <td>
+      	{{if obra.data_inicio == None or obra.data_inicio == '':}}
+      	{{='Não Informado'}}
+      	{{else:}}
+        	
+          {{if int(obra.data_inicio.day) < 10:}}
+          {{='0'+str(obra.data_inicio.day)+'-'}}
+          {{else:}}
+          {{=str(obra.data_inicio.day)+'-'}}
+          {{pass}}
+
+          {{if int(obra.data_inicio.month) < 10:}}
+          {{='0'+str(obra.data_inicio.month)+'-'}}
+          {{else:}}
+          {{=str(obra.data_inicio.month)+'-'}}
+          {{pass}}
+
+        {{=str(obra.data_inicio.year)}}
+      	{{pass}}
+	   </td>
+	   <td>
+      	{{if obra.data_final == None or obra.data_final == '':}}
+      	{{='Não Informado'}}
+      	{{else:}}
+          {{if int(obra.data_final.day) < 10:}}
+          {{='0'+str(obra.data_inicio.day)+'-'}}
+          {{else:}}
+          {{=str(obra.data_final.day)+'-'}}
+          {{pass}}
+
+          {{if int(obra.data_final.month) < 10:}}
+          {{='0'+str(obra.data_final.month)+'-'}}
+          {{else:}}
+          {{=str(obra.data_final.month)+'-'}}
+          {{pass}}
+      	{{=obra.data_final.year}}
+      	{{pass}}
+	   </td>
+      <td class="right aligned collapsing">
+      	<a class="ui green labeled icon button" href="{{=URL(a='diario_obra', c='obra', f='_editarObra', args=[obra.id])}}">
+		  	<i class="write icon"></i>
+		  	Ver/Editar
+		</a>
+      <input type="hidden" id="removeText{{=controle}}" name="" value="{{=URL(a='diario_obra', c='obra', f='_excluirObra', args=[obra.id])}}">
+      	<a class="ui red labeled icon button" onclick="confirmar($('#removeText{{=controle}}').val(), 'building', 'Você tem certeza de que deseja APAGAR esta obra?')">
+		  	<i class="remove user icon"></i>
+		  	Remover
+		</a>
+      </td>
+    </tr>
+    {{controle = controle + 1}}
+  {{pass}}
+  </tbody>
+</table>
+
+
+{{pass}}
+
+
+
+
+
+<script>
+    function gestao(){
+      if(window.innerWidth < 635){
+        $("#cartao2").removeClass("two");
+        $("#cartao2").addClass("one");
+      }else{
+          $("#cartao2").removeClass("one");
+          $("#cartao2").addClass("two");
+      }
+
+      if(window.innerWidth < 768){
+        $("#tr-nomes").addClass("esconder");
+        $("#tr-nomes").css("display","none !important");
+      }else{
+        $("#tr-nomes").removeClass("esconder");
+      }
+    }
+  
+    $(document).ready(function(){
+      gestao();
+    });
+  
+    $(window).resize(function(){
+      gestao();
+    });
+  </script>

@@ -1,0 +1,86 @@
+{{extend 'lay_obra.html'}}
+{{block center}}
+        
+            
+                <div id="cartao" class="ui three cards link">
+
+                    <input type="hidden" id="obra" name="" value="{{=URL(a='diario_obra', c='obra', f='_listarObras')}}">
+                     <div class="card teal" onclick="window.location = $('#obra').val(); ">
+                        <div class="content">
+                            <div class="header">Obras</div>
+                            <!--<div class="meta">10 obras em andamento</div>-->
+                            <div class="description right" style="text-align: right;">
+                                <i class="building huge icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="diario" name="" value="{{=URL(a='diario_obra', c='diarioObra', f='_listarDiariosObra')}}">
+                    <div class="card teal" onclick="window.location = $('#diario').val(); ">
+                        <div class="content">
+                            <div class="header">Diario de Obra</div>
+                            <div class="meta"></div>
+                            <div class="description right" style="text-align: right;">
+                                <i class="edit huge icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                    {{if auth.user.tipo == 2:}}
+                    <input type="hidden" id="usu" name="" value="{{=URL(a='diario_obra', c='usuario', f='_editarUsuario', args=[auth.user.id])}}">
+                    <div class="card teal" onclick="window.location = $('#usu').val(); ">
+                        <div class="content">
+                            <div class="header">Configurações</div>
+                            <div class="meta"></div>
+                            <div class="description right" style="text-align: right;">
+                                <i class="settings huge icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                    {{else:}}
+                    <input type="hidden" id="usu" name="" value="{{=URL(a='diario_obra', c='usuario', f='_listarUsuario')}}">
+                    <div class="card teal" onclick="window.location = $('#usu').val(); ">
+                        <div class="content">
+                            <div class="header">Usuário</div>
+                            <div class="meta"></div>
+                            <div class="description right" style="text-align: right;">
+                                <i class="user huge icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                    {{pass}}
+                </div>
+
+                <div class="ui segment">
+                    <h3>Diarios de Obra Pendentes</h3>
+                    <br>
+                    <div class="ui cards">
+                        {{for diarioPendente in diariosPendentes:}}
+                            {{if diarioPendente.validacao == False:}}
+                                <div class="card">
+                                    <div class="content">
+                                        <img class="right floated mini ui image" src="">
+                                        <div class="header">
+                                            {{obra = db(Obra.id == diarioPendente.obra).select(Obra.nome)}}
+                                            <span class="meta">Obra: </span> {{=obra[0].nome}}<br><br>
+                                        </div>
+                                        <div >
+                                            <span class="meta">Data de Geração: </span> {{=diarioPendente.created_on}}<br><br>
+                                        </div>
+                                        <div class="description">
+                                            {{=diarioPendente.ser_executado}}
+                                        </div>
+                                    </div>
+
+                                    <div class="extra content">
+                                        <div class="ui two buttons">
+                                            <a class="ui basic blue button" href="{{=URL(a='diario_obra', c='diarioObra', f='_verDiarioObra', args=[diarioPendente.id])}}">Visualizar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {{else:}}
+                                <h4 style="text-align: center; padding: 20px;">Nenhum Diário de Obra Pendente</h4>
+                            {{pass}}
+                        {{pass}}
+                    </div>
+                </div>
+            
+            {{end}}

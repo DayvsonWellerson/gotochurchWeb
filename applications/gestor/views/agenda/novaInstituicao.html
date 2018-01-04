@@ -1,0 +1,48 @@
+{{extend 'ui_gestor.html'}}
+<br><br><br>
+<style>
+    body{
+        background-color: #67707b;
+    }
+    .container{
+        background-color: rgba(255,255,255,.85);
+        padding: 30px;
+    }
+    .error{
+        color: #ff0000;
+    }
+</style>
+<div class="container rounded">
+    <h3>{{=response.app or request.application}}</h3><br>
+    {{=form.custom.begin}}
+    <!--<div class="z-depth-1-half rounded" style="padding:20px;">
+
+        <div class="md-form">
+            {{=form.custom.widget.instituicao}}
+            <label for="agendaTelefonica_instituicao">Instiruição</label>
+        </div>
+        <a class="btn btn-indigo">Adicionar Instituição</a>    
+    </div>    -->
+    <br>
+    <div class="md-form pb-3">
+        {{=form.custom.widget.titulo}}
+        <label for="instituicao_titulo">Título</label>
+    </div>
+
+    <div class="md-form pb-3">
+        {{=form.custom.widget.industria}}
+        <label for="instituicao_industria">Insdustria</label>
+    </div>
+
+    <div class="md-form">
+        {{=form.custom.widget.site}}
+        <label for="instituicao_site">Site</label>
+    </div>
+
+    <div class="md-form pb-3">
+        {{=form.custom.widget.telefonePrincipal}}
+        <label for="instituicao_telefonePrincipal">Telefone Principal</label>
+    </div>
+    {{=form.custom.submit}}
+    {{=form.custom.end}}
+</div>

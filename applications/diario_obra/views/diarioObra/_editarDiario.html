@@ -1,0 +1,190 @@
+{{extend 'lay_obra.html'}}
+
+{{=form.custom.begin}}
+<h2 class="ui dividing header">Editar Diário de Obra</h2>
+<div id="imprimir">
+<div class="field">
+    <div class="ui segment">
+    	<div class="field">
+    		<img class="ui medium centered image" src="{{=URL('static', 'images/img_logo1.png')}}">
+    	</div>
+    	<div class="field">
+    		<label class="ui dividing header" >Número RDO: {{=numRdo}}</label>
+    	</div>
+	    <div class="three fields">
+	      <div class="field">
+	      	<label>Obra</label>
+	        {{=form.custom.widget.obra}}
+	      </div>
+	      <div class="field">
+	      	<label>Serviço Executado</label>
+	        {{=form.custom.widget.ser_executado}}
+	      </div>
+	      <div class="field">
+	      	<label>Cliente</label>
+	        {{=form.custom.widget.cliente}}
+	      </div>
+	    </div>
+    </div>
+</div>
+
+
+<div class="field">
+	<div class="ui segment">
+		<div class="four fields">
+	      <div class="field">
+	      	<label>Dia da Semana</label>
+	        {{=form.custom.widget.dia_semana}}
+	      </div>
+	      <div class="field">
+	      	<label>Efetivo Profissional</label>
+	        {{=form.custom.widget.efetivo_profissional}}
+	      </div>
+	      <div class="field">
+	      	<label>Efetivo Servente</label>
+	        {{=form.custom.widget.efetivo_servente}}
+	      </div>
+	      <div class="field">
+	      	<label>Clima</label>
+	        {{=form.custom.widget.tempo}}
+	      </div>
+	    </div>
+	</div>
+</div>
+<script type="text/javascript">
+	var id = 0;
+	function adicionarOcorrencia(){
+		var html = '<div id="i'+id+'" class="fields">';
+		html += '<div class="fifteen wide field" >';
+		html += '<input class="oco" id="diario_obra_ocorrencia_diaria" name="ocorrencia" type="text" value="">';
+		html += '</div>';
+		html += '<div class="four wide field">';
+		//html += 	'<div class="ui blue icon button" data-tooltip="Adicionar Fotos" onclick="addFoto()">';
+		//html += 		'<i class="photo icon"></i>';
+		//html += 	'</div>';
+		html += 	'<div class="ui red icon button" data-tooltip="Remover ocorrêcia" onclick="removeOcorrencia('+id+')">';
+		html += 		'<i class="minus icon"></i>';
+		html += 	'</div>';
+		html += '</div>';
+		html +='</div>'
+		$("#listaocorrencias").append(html);
+		id++;
+	}
+
+	function removeOcorrencia(id) {
+		$('#i'+id).remove();
+	}
+</script>
+<div class="field">
+	<div class="ui segment">
+		<div id="listaocorrencias" class="field">
+			<label>Ocorrências</label>
+			
+			<div class="right" style=" float: right; position: relative; top: -30px; right: -10px;">
+				<div class="ui green icon button" data-tooltip="Adicionar nova ocorrêcia" onclick="adicionarOcorrencia()">
+					<i class="plus icon"></i>
+				</div>
+			</div>
+			{{controle = 0}}
+			{{for ocorrencia in ocorrencias:}}
+			{{if controle == 0:}}
+			<div class="fields">
+				<div class="fifteen wide field">
+					<input class="oco" iddb="{{=ocorrencia.id}}" id="diario_obra_ocorrencia_diaria" name="ocorrencia" type="text" value="{{=ocorrencia.descricao}}">
+				</div>
+				<div class="three wide field">
+			        <div class="ui blue icon button" data-tooltip="Adicionar Fotos" valor="{{=URL(a='diario_obra', c='diarioObra', f='_adicionarFotosOcorrencia', args=[ocorrencia.id, arg])}}" onclick="addFoto($(this).attr('valor'))">
+						<i class="photo icon"></i>
+					</div>
+			    </div>
+			</div>
+			
+			{{else:}}
+			<div class="fields">
+				<div class="fifteen wide field">
+					<input class="oco" iddb="{{=ocorrencia.id}}" id="diario_obra_ocorrencia_diaria" name="ocorrencia" type="text" value="{{=ocorrencia.descricao}}">
+				</div>
+				<div class="four wide field">
+			        <div class="ui blue icon button" data-tooltip="Adicionar Fotos" valor="{{=URL(a='diario_obra', c='diarioObra', f='_adicionarFotosOcorrencia', args=[ocorrencia.id, arg])}}" onclick="addFoto($(this).attr('valor'))">
+						<i class="photo icon"></i>
+					</div>
+			    </div>
+			</div>
+			{{pass}}
+			{{controle = controle + 1}}
+			{{pass}}
+		</div>
+	</div>
+</div>
+<input type="hidden" name="todasOcorrencias" id="todasOcorrencias">
+<div class="field">
+	<div class="ui segment">
+		<div class="field">
+			<label>Observações</label>
+			{{=form.custom.widget.observaceos}}
+		</div>
+	</div>
+</div>
+
+</div>
+<br>
+{{=form.custom.submit}}
+
+{{=form.custom.end}}
+<script type="text/javascript">
+	function imprimir(){
+		var conteudo = document.getElementById('imprimir').innerHTML, tela_impressao = window.open('about:blank');
+		tela_impressao.document.write(conteudo);
+		tela_impressao.window.print();
+		tela_impressao.window.close();
+	}
+	
+	ocorrencias = [];
+
+	$('#formDiarioObra').submit(function(){
+		$('.oco').each(function(){
+			var id = parseInt($(this).attr('iddb'));
+			var valor = $(this).val();
+			var oc = {
+				id: id,
+				valor: valor
+			};
+
+			console.log(valor);
+			ocorrencias.push(oc);
+		});
+		console.log(ocorrencias);
+		ocorrencias = JSON.stringify(ocorrencias);
+		$('#todasOcorrencias').val(ocorrencias);
+		console.log(ocorrencias);
+		//return false;
+	});
+
+	function addFoto(valor) {
+		$("#i_fotos").attr("src",valor);
+		$('.ui.modal').modal('show');
+	}
+</script>
+
+<br><br>
+<!--<div class="ui labeled blue icon button" data-tooltip="Imprimir diario de obra" onclick="imprimir()">
+	<i class="print icon"></i>Imprimir
+</div>-->
+
+<br><br>
+
+
+
+<!--<div id="addFoto" class="ui modal">
+  
+</div>-->
+
+<div class="ui modal">
+  <div class="header">Adicionar Fotos</div>
+  <div class="content">
+    <iframe id="i_fotos" src="{{=URL(a='diario_obra', c='diarioObra', f='_adicionarFotosOcorrencia')}}" width="100%" height="100%" frameborder="0" style="min-height: 300px; border-radius: 5px;"></iframe>
+  </div>
+  <div class="actions">
+    <div class="ui cancel button">Fechar</div>
+  </div>
+</div>

@@ -1,0 +1,91 @@
+{{#extend 'layout.html'}}
+{{extend 'lay_login.html'}}
+<br><br><br>
+
+{{if request.args(0)=='login':}}
+    
+
+
+
+<div class="ui middle aligned center aligned grid">
+  <div class="column">
+    <h2 class="ui blue image header">
+      <!--<img src="assets/images/logo.png" class="image">-->
+      <div class="content" style="color: #0a0090; /*color: #1b3c68;*/">
+        Entre com seu email e senha
+      </div>
+    </h2>
+    <form method="post" class="ui large form" action="#" id="formlogin">
+    {{=form.custom.begin}}
+      <div class="ui stacked segment">
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="user icon"></i>
+            {{=form.custom.widget.email}}
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="lock icon"></i>
+            {{=form.custom.widget.password }}
+          </div>
+        </div>
+        <input type="hidden" name="login" id="login">
+        {{=form.custom.submit}}
+      </div>
+        <div class="field">
+          <div class="ui toggle checkbox">
+            {{=form.custom.widget.remember_me}}
+            <label>Manter Conectado</label>
+          </div>
+        </div>
+
+      
+      {{=form.custom.end}}
+    </form>
+    {{if response.flash:}}
+    <div class="ui error message" >{{=T(response.flash) or ''}}</div>
+    {{pass}}
+    <div class="ui message">
+      {{= A('Esqueceu a senha ?',_href='request_reset_password', _class='test', _style='color: #0a0090; /*color: #1b3c68;*/')}}
+    </div>
+  </div>
+</div>
+{{pass}}
+
+{{
+    if not 'request_reset_password' in auth.settings.actions_disabled:
+        form.add_button(T('Perdeu a senha ?'),URL(args='request_reset_password'),_class='btn btn-default')
+    pass}}
+
+    {{if request.args(0)=='request_reset_password':}}
+    <div class="ui middle aligned center aligned grid">
+      <div class="column">
+        <h2 class="ui blue image header">
+          <!--<img src="assets/images/logo.png" class="image">-->
+          <div class="content" style="color: #0a0090; /*color: #1b3c68;*/">
+            Informe seu Email
+          </div>
+        </h2>
+        <form method="post" class="ui large form" action="#" id="formlogin2">
+        {{=form.custom.begin}} 
+            <div class="ui stacked segment">
+                <div class="field">
+                  <div class="ui left icon input">
+                    <i class="user icon"></i>
+                    {{=form.custom.widget.email}}
+                  </div>
+                </div>                      
+        {{=form.custom.submit}}
+            </div>
+        </form>
+        {{=form.custom.end}}
+        <div class="ui message">
+          {{= A('Voltar para Login',_href='login', _class='test', _style='color: #0a0090; /*color: #1b3c68;*/')}}
+        </div>
+       </div>
+    </div>
+    {{pass}}
+
+
+

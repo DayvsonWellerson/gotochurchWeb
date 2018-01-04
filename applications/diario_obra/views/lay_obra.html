@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js" lang="{{=T.accepted_language or 'en'}}"> <!--<![endif]-->
+  <head id="h">
+    <meta charset="utf-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge{{=not request.is_local and ',chrome=1' or ''}}">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{=response.title or request.application}}</title>
+    
+    <meta name="application-name" content="{{=request.application}}">
+    
+    <meta name="google-site-verification" content="">
+    <!-- include stylesheets -->
+    <link rel="shortcut icon" href="{{=URL('static','images/logo.png')}}" type="image/png">
+    <link rel="apple-touch-icon" href="{{=URL('static','images/logo.png')}}">
+    <link rel="stylesheet" type="text/css" href="{{=URL('static','dist/components/reset.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{=URL('static','dist/components/site.css')}}">
+
+    <link rel="stylesheet" href="{{=URL('static','dist/components/container.css')}}">
+    <link rel="stylesheet" href="{{=URL('static','dist/components/grid.css')}}">
+    <link rel="stylesheet" href="{{=URL('static','dist/components/header.css')}}">
+    <link rel="stylesheet" href="{{=URL('static','dist/components/image.css')}}">
+    <link rel="stylesheet" href="{{=URL('static','dist/components/menu.css')}}">
+
+    <link rel="stylesheet"  href="{{=URL('static','dist/components/divider.css')}}">
+    <link rel="stylesheet"  href="{{=URL('static','dist/components/segment.css')}}">
+    <link rel="stylesheet"  href="{{=URL('static','dist/components/form.css')}}">
+    <link rel="stylesheet"  href="{{=URL('static','dist/components/input.css')}}">
+    <link rel="stylesheet"  href="{{=URL('static','dist/components/button.css')}}">
+    <link rel="stylesheet"  href="{{=URL('static','dist/components/list.css')}}">
+    <link rel="stylesheet"  href="{{=URL('static','dist/components/message.css')}}">
+    <link rel="stylesheet"  href="{{=URL('static','dist/components/icon.css')}}">
+    <link rel="stylesheet"  href="{{=URL('static','dist/components/dropdown.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{=URL('static','dist/semantic.min.css')}}">
+
+    <script src="{{=URL('static','js/jquery-3.2.1.min.js')}}"></script>
+    <script src="{{=URL('static','dist/components/form.js')}}"></script>
+    <script src="{{=URL('static','dist/components/dropdown.js')}}"></script>
+    <script src="{{=URL('static','dist/components/transition.js')}}"></script>
+    <script src="{{=URL('static','dist/components/visibility.js')}}"></script>
+    <script src="{{=URL('static','dist/semantic.min.js')}}"></script>
+    <script src="{{=URL('static', 'jQuery-Mask-Plugin-master/dist/jquery.mask.min.js')}}"></script>
+
+        
+        <style type="text/css">
+          .error{
+            color: red !important;
+          }
+        </style>
+        
+        
+        
+        
+
+        
+        
+        
+        
+        
+    
+    <script src="{{=URL('static','js/modernizr-2.8.3.min.js')}}"></script>
+    <!--[if lt IE 9]>
+        <script src="{{=URL('static','js/respond-1.4.2.min.js')}}"></script>
+        <![endif]-->
+    <!-- Favicons -->
+  </head>
+  <body id="b" style="background: #ececec;">
+    <script>
+        $(document).ready(function(){
+            $('.dropdown')
+            .dropdown({
+                // you can use any ui transition
+                transition: 'drop'
+            })
+            ;
+        });
+        </script>
+            <div class="uix fixedx invertedx menux">
+                <div class="ui small inverted fixed menu" style="/*background-color: #0a0090;*/ background-color: #1b3c68;">
+                    <a class="item" onclick="$('.ui.labeled.icon.sidebar').sidebar('toggle');">
+                        <i class="sidebar large icon"></i>Menu
+                    </a>
+                    {{if auth.user.tipo != 2:}}
+                    <div class="left menu">
+                        <div class="ui dropdown item">
+                            Cadastrar<i class="dropdown icon"></i>                        
+                            <div class="menu">
+                                <a class="item" href="{{=URL(a='diario_obra', c='usuario', f='_novoUsuario')}}">Novo Usuario</a>
+                                <a class="item" href="{{=URL(a='diario_obra', c='obra', f='_novaObra')}}">Nova Obra</a>
+                                <div class="divider"></div>
+                                <a class="item" href="{{=URL(a='diario_obra', c='diarioObra', f='_novoDiario')}}">Gerar Novo Diario de Obra</a>
+                            </div>
+                        </div>
+                    </div>
+                    {{pass}}
+                    <div class="right menu">
+                        <div class="ui dropdown item">
+                         {{=auth.user.first_name}}<i class="dropdown icon"></i>
+                        <div class="menu">
+                            <a class="active item">{{=auth.user.email}}</a>
+                            <a class="item" href="{{=URL(a='diario_obra', c='usuario', f='_editarUsuario', args=[auth.user.id])}}">Configurações</a>
+                            <div class="divider"></div>
+                            <a class="item" href="{{=URL(a='diario_obra', c='default', f='user', args=['logout'])}}">Sair</a>
+                        </div>
+                        </div>
+                    </div>
+                </div>  
+            </div>
+            <!-- BARRA LATERAL -->
+            <div class="ui left demo vertical inverted sidebar labeled icon menu" style="/*background-color: #0a0090;*/ background-color: #1b3c68;">
+                <a class="item" href="{{=URL(a='diario_obra', c='inicio', f='index')}}">
+                    <i class="home icon"></i>
+                    Home
+                </a>
+                <a class="item" href="{{=URL(a='diario_obra', c='usuario', f='_editarUsuario', args=[auth.user.id])}}">
+                    <i class="settings icon"></i>
+                    Configurações
+                </a>
+                <a class="item" href="{{=URL(a='diario_obra', c='obra', f='_listarObras')}}">
+                    <i class="building icon"></i>
+                    Obras
+                </a>
+                <a class="item" href="{{=URL(a='diario_obra', c='diarioObra', f='_listarDiariosObra')}}">
+                    <i class="edit icon"></i>
+                    Diario de Obra
+                </a>
+                
+            </div>
+        <div class="ui main container" style="margin-top: 60px;">
+        {{if response.flash:}}
+        <div class="ui positive message">
+          <i class="close icon"></i>
+          <div class="header">
+            Sucesso!
+          </div>
+          <p>{{=T(response.flash)}}</p>
+        </div>
+        <script type="text/javascript">
+          $('.message .close').on('click', function() {
+            $(this).closest('.message').transition('fade');
+          });
+        </script>
+        {{pass}}
+        {{block center}}
+        {{include}}
+        {{end}}
+        </div>
+        <script>
+                function cartao(){
+                    if(window.innerWidth < 500){
+                        $("#cartao").removeClass("three");
+                        //$("#cartao").removeClass("two");
+                        $("#cartao").addClass("one");
+                    }else{
+                        $("#cartao").removeClass("one");
+                        $("#cartao").addClass("three");
+                        //$("#cartao").addClass("two");
+                    }
+                }
+
+                $(document).ready(function(){
+                    cartao();
+                });
+
+                $(window).resize(function(){
+                    cartao();
+                });
+                
+            </script>
+        <script type="text/javascript">
+          function removeConfirmar() {
+            $('.ui.basic.modal').modal('hide',function() {
+              $('#confirm').remove();  
+            });
+          }
+          function confirmar(url, icon, message){
+            var html = '<div id="confirm" class="ui basic modal">'+
+                        '<div class="ui icon header">'+
+                         ' <i class="'+icon+' icon"></i>'+
+                          'ATENÇÃO!'+
+                        '</div>'+
+                        '<div class="content" style="text-align:center;">'+
+                          '<p><h3>'+message+'<h3></p>'+
+                        '</div>'+
+                        '<div class="actions">'+
+                          '<div class="ui red basic cancel inverted button" onclick="removeConfirmar()">'+
+                            '<i class="remove icon"></i>'+
+                            'Não'+
+                          '</div>'+
+                          '<a class="ui green ok inverted button" href="'+url+'">'+
+                            '<i class="checkmark icon"></i>'+
+                            'Sim'+
+                          '</a>'+
+                        '</div>'+
+                      '</div>';
+
+            $('body').append(html);
+            $('.ui.basic.modal').modal('show');
+          }
+        </script>
+        
+
+    <!-- The javascript =============================== -->
+    <!-- Analytics ==================================== -->
+    <!--<script src="{{=URL('static','js/analytics.min.js')}}"></script>-->
+    
+  </body>
+</html>

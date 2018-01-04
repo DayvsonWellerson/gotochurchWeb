@@ -1,0 +1,87 @@
+{{extend 'lay_obra.html'}}
+
+
+
+
+
+<input type="hidden" id="novoUsu" name="" value="{{=URL(a='diario_obra', c='usuario', f='_novoUsuario')}}">
+<div class="ui two cards link">
+	<div class="card blue" onclick="window.location = $('#novoUsu').val();">
+		<div class="content">
+		    <div class="header">Adicionar Usuário</div>
+		    <div class="meta"></div>
+		    <div class="description right" style="text-align: right;">
+		        <i class="add user huge icon"></i>
+		    </div>
+		</div>
+	</div>
+  <!-- Pesquisa -->
+  
+  <div class="ui search right" style=" right: -8%; margin-top: 4%;">
+    <form>
+      <div class="ui icon input">
+        <h3 style="margin: 6px 5px 0 0;">Pesquisar Usuario </h3>
+        <input class="prompt" type="text" name="nome" placeholder="Informe o nome..." style="border-radius: 5px;">
+        <i class="search icon"></i>
+      </div>
+      <input type="submit" name="" class="ui blue icon button" value="Perquisar">
+    </form>
+  </div>
+</div>
+
+
+<table class="ui celled striped table">
+  <thead>
+    <tr>
+    <th colspan="6">
+      Lista de Usuários
+    </th>
+  </tr>
+  <tr>
+  	<th>Nome</th>
+  	<th>Sobrenome</th>
+  	<th>Email</th>
+  	<th>CPF</th>
+  	<th>CNPJ</th>
+  	<th></th>
+  </tr>
+  </thead>
+  <tbody>
+  {{controle = 0}}
+  {{for usuario in listaUsuario:}}
+    <tr>
+      <td class="collapsing">
+        <i class="user icon"></i> {{=usuario.first_name}}
+      </td>
+      <td>{{=usuario.last_name}}</td>
+      <td>{{=usuario.email}}</td>
+      <td>
+      	{{if usuario.cpf == None or usuario.cpf == '':}}
+      	{{='Não Cadastrado'}}
+      	{{else:}}
+      	{{=usuario.cpf}}
+      	{{pass}}
+	   </td>
+	   <td>
+      	{{if usuario.cnpj == None or usuario.cnpj == '':}}
+      	{{='Não Cadastrado'}}
+      	{{else:}}
+      	{{=usuario.cnpj}}
+      	{{pass}}
+	   </td>
+      <td class="right aligned collapsing">
+      	<a class="ui green labeled icon button" href="{{=URL(a='diario_obra', c='usuario', f='_editarUsuario', args=[usuario.id])}}">
+		  	<i class="write icon"></i>
+		  	Editar
+		</a>
+        <input type="hidden" id="removeUserText{{=controle}}" name="" value="{{=URL(a='diario_obra', c='usuario', f='_excluirUsuario', args=[usuario.id])}}">
+      	<a class="ui red labeled icon button" onclick="confirmar($('#removeUserText{{=controle}}').val(), 'remove user', 'Você tem certeza de que deseja APAGAR este Usuario?')">
+		  	<i class="remove user icon"></i>
+		  	Remover
+		</a>
+      </td>
+    </tr>
+    {{controle = controle+1}}
+  {{pass}}
+  </tbody>
+</table>

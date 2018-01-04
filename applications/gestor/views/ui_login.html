@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html class="no-js" lang="{{=T.accepted_language or 'en'}}">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge{{=not request.is_local and ',chrome=1' or ''}}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{=response.title or request.application}}</title>
+    <meta name="application-name" content="{{=request.application}}">
+    <link rel="shortcut icon" href="{{=URL('static','images/favicon.png')}}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{{=URL('static','images/favicon.png')}}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+   
+    <link rel="stylesheet" href="{{=URL('static','css/compiled.min.css')}}" />
+    <!-- All JavaScript at the bottom, except for Modernizr which enables
+         HTML5 elements & feature detects -->
+    <script src="{{=URL('static','js/modernizr-2.8.3.min.js')}}"></script>
+</head>
+
+<body>
+    
+    <!--[if lt IE 8]><p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p><![endif]-->
+    {{block header}} {{end}}
+    <!-- Main ========================================= -->
+
+    <!-- Begin page content -->
+
+    <div class="">
+        {{block center}} {{include}} {{end}}
+    </div>
+
+    </div>
+
+    <!-- The javascript =============================== -->
+    <script src="{{=URL('static','js/compiled.min.js')}}"></script>
+    <script src="{{=URL('static','js/jquery-3.2.1.min.js')}}"></script>
+    <script>
+
+        // SideNav Initialization
+        //$(".button-collapse").sideNav();
+        /*$('.button-collapse').sideNav({
+            edge: 'right', // Choose the horizontal origin
+            closeOnClick: true // Closes side-nav on <a> clicks, useful for Angular/Meteor
+        });
+        new WOW().init();*/
+
+    </script>
+    {{if response.flash:}}
+    <script>
+        toastr.warning('{{=response.flash}}');
+    </script>
+    {{pass}}
+</body>
+
+</html>

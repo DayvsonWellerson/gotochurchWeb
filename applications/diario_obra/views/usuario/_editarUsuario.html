@@ -1,0 +1,88 @@
+{{extend 'lay_obra.html'}}
+
+{{if session.flash or response.flash:}}
+<div class="ui positive message">
+  <i class="close icon"></i>
+  <div class="header">
+    Sucesso!
+  </div>
+  <p>{{=T(session.flash) or ''}}</p>
+</div>
+{{pass}}
+
+{{block center}}
+
+{{=form.custom.begin}}
+<h2 class="ui dividing header">Editar Informações do Usuário</h2>
+<div class="field">
+    <label>Nome</label>
+    <div class="two fields">
+      <div class="field">
+        {{=form.custom.widget.first_name}}
+      </div>
+      <div class="field">
+        {{=form.custom.widget.last_name}}
+      </div>
+    </div>
+</div>
+<div class="field">
+  {{if editarTudo == True:}}  
+  <div class="three fields">
+    
+    <div class="field">
+      <label>CPF</label>
+      {{=form.custom.widget.cpf}}
+    </div>
+    
+    <div class="field">
+      <label>CNPJ</label>
+      {{=form.custom.widget.cnpj}}
+    </div>
+
+    <div class="field">
+      <label>Tipo de Usuário</label>
+      {{=form.custom.widget.tipo}}
+    </div>
+  </div>
+  {{else:}}
+  <div class="two fields">
+    
+    <div class="field">
+      <label>CPF</label>
+      {{=form.custom.widget.cpf}}
+    </div>
+    
+    <div class="field">
+      <label>CNPJ</label>
+      {{=form.custom.widget.cnpj}}
+    </div>
+  </div>
+  <input type="hidden" name="tipo" value="{{=tipo}}">
+  {{pass}}
+</div>
+<div class="ui segment">
+  <label><h4>Login</h4></label><br>
+  <div class="field">
+    <label>Email</label>
+    <div class="field">
+          {{=form.custom.widget.email}}
+      </div>
+  </div>
+  <div class="field">
+    <label>Senha</label>
+    <div class="field">
+        {{=form.custom.widget.password}}
+    </div>
+    </div>
+</div>
+
+<div class="uix buttonx">
+{{=form.custom.submit}}
+</div>
+{{=form.custom.end}}
+<script>
+  $('.cpfs').mask('000.000.000-00', {reverse: true});
+  $('.cnpj').mask('00.000.000/0000-00', {reverse: true});
+</script>
+
+{{end}}

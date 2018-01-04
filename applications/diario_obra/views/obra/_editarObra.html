@@ -1,0 +1,61 @@
+{{extend 'lay_obra.html'}}
+{{block center}}
+{{=form.custom.begin}}
+<h2 class="ui dividing header">Editar Informações da Obra</h2>
+
+<div class="field">
+    <label><h3>Obra</h3></label><br>
+    <div class="ui segment">
+    	<label><h4>Cabeçalho</h4></label><br>
+	    <div class="three fields">
+	      <div class="field">
+	      	<label>Nome da Obra</label>
+	        {{=form.custom.widget.nome}}
+	      </div>
+	      <div class="field">
+			<label>Responsável</label>
+			<div class="field">
+		        {{=form.custom.widget.responsavel}}
+		    </div>
+		  </div>
+		  <div class="field">
+			<label>Cliente</label>
+			<div class="field">
+		        {{=form.custom.widget.cliente}}
+		    </div>
+		  </div>
+	    </div>
+    </div>
+</div>
+
+<div class="field">
+    
+  <div class="two fields">
+    
+    <div class="field">
+      <label>Data de Inicio</label>
+      {{=form.custom.widget.data_inicio}}
+    </div>
+    
+    <div class="field">
+      <label>Data de Finalização</label>
+      {{=form.custom.widget.data_final}}
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$('.datas').mask('00-00-0000');
+</script>
+
+<div class="field">
+	<label>Aditivo</label>
+	<div class="field">
+        {{=form.custom.widget.aditivo}}
+    </div>
+</div>
+<div class="uix buttonx">
+{{=form.custom.submit}}
+</div>
+{{=form.custom.end}}
+
+{{end}}

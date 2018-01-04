@@ -1,0 +1,422 @@
+timestamp: 2017-08-08T15:17:06.382385
+CREATE TABLE "auth_user"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "first_name" CHAR(128),
+    "last_name" CHAR(128),
+    "email" CHAR(512),
+    "password" CHAR(512),
+    "registration_key" CHAR(512),
+    "reset_password_key" CHAR(512),
+    "registration_id" CHAR(512)
+);
+success!
+timestamp: 2017-08-08T15:17:06.556052
+CREATE TABLE "auth_group"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "role" CHAR(512),
+    "description" TEXT
+);
+success!
+timestamp: 2017-08-08T15:17:06.666737
+CREATE TABLE "auth_membership"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "user_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "group_id" INTEGER REFERENCES "auth_group" ("id") ON DELETE CASCADE  
+);
+success!
+timestamp: 2017-08-08T15:17:06.792699
+CREATE TABLE "auth_permission"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "group_id" INTEGER REFERENCES "auth_group" ("id") ON DELETE CASCADE  ,
+    "name" CHAR(512),
+    "table_name" CHAR(512),
+    "record_id" INTEGER
+);
+success!
+timestamp: 2017-08-08T15:17:06.894795
+CREATE TABLE "auth_event"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "time_stamp" TIMESTAMP,
+    "client_ip" CHAR(512),
+    "user_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "origin" CHAR(512),
+    "description" TEXT
+);
+success!
+timestamp: 2017-08-08T15:17:07.040782
+CREATE TABLE "auth_cas"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "user_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "created_on" TIMESTAMP,
+    "service" CHAR(512),
+    "ticket" CHAR(512),
+    "renew" CHAR(1)
+);
+success!
+timestamp: 2017-08-10T13:49:26.723974
+CREATE TABLE `auth_user`(
+    `id` INT AUTO_INCREMENT NOT NULL,
+    `first_name` VARCHAR(128),
+    `last_name` VARCHAR(128),
+    `email` VARCHAR(512),
+    `password` VARCHAR(512),
+    `registration_key` VARCHAR(512),
+    `reset_password_key` VARCHAR(512),
+    `registration_id` VARCHAR(512),
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2017-08-10T13:49:27.153998
+CREATE TABLE `auth_group`(
+    `id` INT AUTO_INCREMENT NOT NULL,
+    `role` VARCHAR(512),
+    `description` LONGTEXT,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2017-08-10T13:49:27.507862
+CREATE TABLE `auth_membership`(
+    `id` INT AUTO_INCREMENT NOT NULL,
+    `user_id` INT  , INDEX `user_id__idx` (`user_id`), FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`) ON DELETE CASCADE,
+    `group_id` INT  , INDEX `group_id__idx` (`group_id`), FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`) ON DELETE CASCADE,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2017-08-10T13:49:28.015613
+CREATE TABLE `auth_permission`(
+    `id` INT AUTO_INCREMENT NOT NULL,
+    `group_id` INT  , INDEX `group_id__idx` (`group_id`), FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`) ON DELETE CASCADE,
+    `name` VARCHAR(512),
+    `table_name` VARCHAR(512),
+    `record_id` INTEGER,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2017-08-10T13:49:28.404337
+CREATE TABLE `auth_event`(
+    `id` INT AUTO_INCREMENT NOT NULL,
+    `time_stamp` DATETIME,
+    `client_ip` VARCHAR(512),
+    `user_id` INT  , INDEX `user_id__idx` (`user_id`), FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`) ON DELETE CASCADE,
+    `origin` VARCHAR(512),
+    `description` LONGTEXT,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2017-08-10T13:49:28.775708
+CREATE TABLE `auth_cas`(
+    `id` INT AUTO_INCREMENT NOT NULL,
+    `user_id` INT  , INDEX `user_id__idx` (`user_id`), FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`) ON DELETE CASCADE,
+    `created_on` DATETIME,
+    `service` VARCHAR(512),
+    `ticket` VARCHAR(512),
+    `renew` CHAR(1),
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2017-08-10T13:49:29.149875
+CREATE TABLE `obra`(
+    `id` INT AUTO_INCREMENT NOT NULL,
+    `data_inicio` DATE,
+    `data_final` DATE,
+    `responsavel` INT  , INDEX `responsavel__idx` (`responsavel`), FOREIGN KEY (`responsavel`) REFERENCES `auth_user` (`id`) ON DELETE CASCADE,
+    `aditivo` VARCHAR(512),
+    `orcamento` DOUBLE,
+    `endereco` VARCHAR(512),
+    `cliente` INT  , INDEX `cliente__idx` (`cliente`), FOREIGN KEY (`cliente`) REFERENCES `auth_user` (`id`) ON DELETE CASCADE,
+    `nome` VARCHAR(512),
+    `is_active` CHAR(1),
+    `created_on` DATETIME,
+    `created_by` INT  , INDEX `created_by__idx` (`created_by`), FOREIGN KEY (`created_by`) REFERENCES `auth_user` (`id`) ON DELETE CASCADE,
+    `modified_on` DATETIME,
+    `modified_by` INT  , INDEX `modified_by__idx` (`modified_by`), FOREIGN KEY (`modified_by`) REFERENCES `auth_user` (`id`) ON DELETE CASCADE,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2017-08-10T13:49:29.737481
+CREATE TABLE `diario_obra`(
+    `id` INT AUTO_INCREMENT NOT NULL,
+    `obra` INT  , INDEX `obra__idx` (`obra`), FOREIGN KEY (`obra`) REFERENCES `obra` (`id`) ON DELETE CASCADE,
+    `ser_executado` VARCHAR(512),
+    `observaceos` VARCHAR(512),
+    `tempo` TIME,
+    `validacao` CHAR(1),
+    `dia_semana` VARCHAR(512),
+    `data_validacao` DATE,
+    `efetivo_servente` VARCHAR(512),
+    `ocorrencia_diaria` VARCHAR(512),
+    `folha_relatorio` VARCHAR(512),
+    `efetivo_profissional` VARCHAR(512),
+    `imagem` VARCHAR(512),
+    `is_active` CHAR(1),
+    `created_on` DATETIME,
+    `created_by` INT  , INDEX `created_by__idx` (`created_by`), FOREIGN KEY (`created_by`) REFERENCES `auth_user` (`id`) ON DELETE CASCADE,
+    `modified_on` DATETIME,
+    `modified_by` INT  , INDEX `modified_by__idx` (`modified_by`), FOREIGN KEY (`modified_by`) REFERENCES `auth_user` (`id`) ON DELETE CASCADE,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2017-08-12T12:28:59.266561
+ALTER TABLE `auth_user` ADD `cnpj` VARCHAR(512) UNIQUE;
+timestamp: 2017-08-12T12:29:54.613208
+ALTER TABLE `auth_user` ADD `cnpj` VARCHAR(512);
+success!
+timestamp: 2017-08-12T12:29:56.172367
+ALTER TABLE `auth_user` ADD `cpf` VARCHAR(512);
+success!
+success!
+timestamp: 2017-08-17T12:25:46.581726
+ALTER TABLE `auth_user` ADD `tipo` INTEGER;
+success!
+success!
+timestamp: 2017-08-17T20:56:03.196166
+ALTER TABLE `diario_obra` ADD `ocorrencia_diaria__tmp` LONGTEXT;
+success!
+UPDATE `diario_obra` SET `ocorrencia_diaria__tmp`=`ocorrencia_diaria`;
+success!
+ALTER TABLE `diario_obra` DROP COLUMN `ocorrencia_diaria`;
+success!
+ALTER TABLE `diario_obra` ADD `ocorrencia_diaria` LONGTEXT;
+success!
+UPDATE `diario_obra` SET `ocorrencia_diaria`=`ocorrencia_diaria__tmp`;
+success!
+ALTER TABLE `diario_obra` DROP COLUMN `ocorrencia_diaria__tmp`;
+success!
+timestamp: 2017-08-17T20:56:06.102096
+ALTER TABLE `diario_obra` ADD `observaceos__tmp` LONGTEXT;
+success!
+UPDATE `diario_obra` SET `observaceos__tmp`=`observaceos`;
+success!
+ALTER TABLE `diario_obra` DROP COLUMN `observaceos`;
+success!
+ALTER TABLE `diario_obra` ADD `observaceos` LONGTEXT;
+success!
+UPDATE `diario_obra` SET `observaceos`=`observaceos__tmp`;
+success!
+ALTER TABLE `diario_obra` DROP COLUMN `observaceos__tmp`;
+success!
+timestamp: 2017-08-17T20:56:09.146068
+ALTER TABLE `diario_obra` ADD `cliente` INT  , ADD INDEX `cliente__idx` (`cliente`), ADD FOREIGN KEY (`cliente`) REFERENCES `auth_user` (`id`) ON DELETE CASCADE;
+success!
+success!
+timestamp: 2017-08-17T21:20:46.188866
+ALTER TABLE `diario_obra` ADD `ocorrencia_diaria__tmp` VARCHAR(512);
+success!
+UPDATE `diario_obra` SET `ocorrencia_diaria__tmp`=`ocorrencia_diaria`;
+success!
+ALTER TABLE `diario_obra` DROP COLUMN `ocorrencia_diaria`;
+success!
+ALTER TABLE `diario_obra` ADD `ocorrencia_diaria` VARCHAR(512);
+success!
+UPDATE `diario_obra` SET `ocorrencia_diaria`=`ocorrencia_diaria__tmp`;
+success!
+ALTER TABLE `diario_obra` DROP COLUMN `ocorrencia_diaria__tmp`;
+success!
+success!
+timestamp: 2017-08-18T22:44:49.281261
+CREATE TABLE `ocorrencia`(
+    `id` INT AUTO_INCREMENT NOT NULL,
+    `diarioObra` INT  , INDEX `diarioObra__idx` (`diarioObra`), FOREIGN KEY (`diarioObra`) REFERENCES `diario_obra` (`id`) ON DELETE CASCADE,
+    `descricao` VARCHAR(512),
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2017-08-19T18:10:06.551446
+ALTER TABLE `ocorrencia` ADD `msg_recusa` LONGTEXT;
+success!
+timestamp: 2017-08-19T18:10:07.503267
+ALTER TABLE `ocorrencia` ADD `modified_by` INT  , ADD INDEX `modified_by__idx` (`modified_by`), ADD FOREIGN KEY (`modified_by`) REFERENCES `auth_user` (`id`) ON DELETE CASCADE;
+success!
+timestamp: 2017-08-19T18:10:08.591352
+ALTER TABLE `ocorrencia` ADD `is_active` CHAR(1);
+success!
+timestamp: 2017-08-19T18:10:09.252380
+ALTER TABLE `ocorrencia` ADD `created_by` INT  , ADD INDEX `created_by__idx` (`created_by`), ADD FOREIGN KEY (`created_by`) REFERENCES `auth_user` (`id`) ON DELETE CASCADE;
+success!
+timestamp: 2017-08-19T18:10:10.227327
+ALTER TABLE `ocorrencia` ADD `created_on` DATETIME;
+success!
+timestamp: 2017-08-19T18:10:10.895210
+ALTER TABLE `ocorrencia` ADD `modified_on` DATETIME;
+success!
+timestamp: 2017-08-19T18:10:11.560744
+ALTER TABLE `ocorrencia` ADD `validacao` CHAR(1);
+success!
+success!
+timestamp: 2017-08-22T00:15:55.665823
+CREATE TABLE `imageens_ocorrencias`(
+    `id` INT AUTO_INCREMENT NOT NULL,
+    `ocorrencia` INT  , INDEX `ocorrencia__idx` (`ocorrencia`), FOREIGN KEY (`ocorrencia`) REFERENCES `ocorrencia` (`id`) ON DELETE CASCADE,
+    `imagem` VARCHAR(512),
+    `diario_obra` INT  , INDEX `diario_obra__idx` (`diario_obra`), FOREIGN KEY (`diario_obra`) REFERENCES `diario_obra` (`id`) ON DELETE CASCADE,
+    `is_active` CHAR(1),
+    `created_on` DATETIME,
+    `created_by` INT  , INDEX `created_by__idx` (`created_by`), FOREIGN KEY (`created_by`) REFERENCES `auth_user` (`id`) ON DELETE CASCADE,
+    `modified_on` DATETIME,
+    `modified_by` INT  , INDEX `modified_by__idx` (`modified_by`), FOREIGN KEY (`modified_by`) REFERENCES `auth_user` (`id`) ON DELETE CASCADE,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+TRUNCATE TABLE `auth_user` RESTART IDENTITY CASCADE;
+TRUNCATE TABLE `auth_membership` RESTART IDENTITY CASCADE;
+TRUNCATE TABLE `auth_membership` RESTART IDENTITY CASCADE;
+TRUNCATE TABLE `auth_membership` RESTART IDENTITY CASCADE;
+TRUNCATE TABLE `auth_membership` RESTART IDENTITY CASCADE;
+TRUNCATE TABLE `auth_membership` RESTART IDENTITY CASCADE;
+TRUNCATE TABLE `auth_membership` RESTART IDENTITY CASCADE;
+TRUNCATE TABLE `auth_membership` RESTART IDENTITY CASCADE;
+TRUNCATE TABLE `auth_membership` RESTART IDENTITY CASCADE;
+timestamp: 2017-08-23T21:12:30.309776
+CREATE TABLE `auth_user`(
+    `id` INT AUTO_INCREMENT NOT NULL,
+    `first_name` VARCHAR(128),
+    `last_name` VARCHAR(128),
+    `email` VARCHAR(512),
+    `password` VARCHAR(512),
+    `registration_key` VARCHAR(512),
+    `reset_password_key` VARCHAR(512),
+    `registration_id` VARCHAR(512),
+    `cpf` VARCHAR(512),
+    `cnpj` VARCHAR(512),
+    `tipo` INTEGER,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2017-08-23T21:12:31.211498
+CREATE TABLE `auth_group`(
+    `id` INT AUTO_INCREMENT NOT NULL,
+    `role` VARCHAR(512),
+    `description` LONGTEXT,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2017-08-23T21:12:31.565203
+CREATE TABLE `auth_membership`(
+    `id` INT AUTO_INCREMENT NOT NULL,
+    `user_id` INT  , INDEX `user_id__idx` (`user_id`), FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`) ON DELETE CASCADE,
+    `group_id` INT  , INDEX `group_id__idx` (`group_id`), FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`) ON DELETE CASCADE,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2017-08-23T21:12:32.258841
+CREATE TABLE `auth_permission`(
+    `id` INT AUTO_INCREMENT NOT NULL,
+    `group_id` INT  , INDEX `group_id__idx` (`group_id`), FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`) ON DELETE CASCADE,
+    `name` VARCHAR(512),
+    `table_name` VARCHAR(512),
+    `record_id` INTEGER,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2017-08-23T21:12:32.672060
+CREATE TABLE `auth_event`(
+    `id` INT AUTO_INCREMENT NOT NULL,
+    `time_stamp` DATETIME,
+    `client_ip` VARCHAR(512),
+    `user_id` INT  , INDEX `user_id__idx` (`user_id`), FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`) ON DELETE CASCADE,
+    `origin` VARCHAR(512),
+    `description` LONGTEXT,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2017-08-23T21:12:33.218929
+CREATE TABLE `auth_cas`(
+    `id` INT AUTO_INCREMENT NOT NULL,
+    `user_id` INT  , INDEX `user_id__idx` (`user_id`), FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`) ON DELETE CASCADE,
+    `created_on` DATETIME,
+    `service` VARCHAR(512),
+    `ticket` VARCHAR(512),
+    `renew` CHAR(1),
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2017-08-23T21:12:33.601643
+CREATE TABLE `obra`(
+    `id` INT AUTO_INCREMENT NOT NULL,
+    `data_inicio` DATE,
+    `data_final` DATE,
+    `responsavel` INT  , INDEX `responsavel__idx` (`responsavel`), FOREIGN KEY (`responsavel`) REFERENCES `auth_user` (`id`) ON DELETE CASCADE,
+    `aditivo` VARCHAR(512),
+    `orcamento` DOUBLE,
+    `endereco` VARCHAR(512),
+    `cliente` INT  , INDEX `cliente__idx` (`cliente`), FOREIGN KEY (`cliente`) REFERENCES `auth_user` (`id`) ON DELETE CASCADE,
+    `nome` VARCHAR(512),
+    `is_active` CHAR(1),
+    `created_on` DATETIME,
+    `created_by` INT  , INDEX `created_by__idx` (`created_by`), FOREIGN KEY (`created_by`) REFERENCES `auth_user` (`id`) ON DELETE CASCADE,
+    `modified_on` DATETIME,
+    `modified_by` INT  , INDEX `modified_by__idx` (`modified_by`), FOREIGN KEY (`modified_by`) REFERENCES `auth_user` (`id`) ON DELETE CASCADE,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2017-08-23T21:12:34.125700
+CREATE TABLE `diario_obra`(
+    `id` INT AUTO_INCREMENT NOT NULL,
+    `obra` INT  , INDEX `obra__idx` (`obra`), FOREIGN KEY (`obra`) REFERENCES `obra` (`id`) ON DELETE CASCADE,
+    `ser_executado` VARCHAR(512),
+    `observaceos` LONGTEXT,
+    `tempo` TIME,
+    `validacao` CHAR(1),
+    `dia_semana` VARCHAR(512),
+    `data_validacao` DATE,
+    `efetivo_servente` VARCHAR(512),
+    `ocorrencia_diaria` VARCHAR(512),
+    `folha_relatorio` VARCHAR(512),
+    `efetivo_profissional` VARCHAR(512),
+    `imagem` VARCHAR(512),
+    `cliente` INT  , INDEX `cliente__idx` (`cliente`), FOREIGN KEY (`cliente`) REFERENCES `auth_user` (`id`) ON DELETE CASCADE,
+    `is_active` CHAR(1),
+    `created_on` DATETIME,
+    `created_by` INT  , INDEX `created_by__idx` (`created_by`), FOREIGN KEY (`created_by`) REFERENCES `auth_user` (`id`) ON DELETE CASCADE,
+    `modified_on` DATETIME,
+    `modified_by` INT  , INDEX `modified_by__idx` (`modified_by`), FOREIGN KEY (`modified_by`) REFERENCES `auth_user` (`id`) ON DELETE CASCADE,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2017-08-23T21:12:34.708486
+CREATE TABLE `ocorrencia`(
+    `id` INT AUTO_INCREMENT NOT NULL,
+    `diarioObra` INT  , INDEX `diarioObra__idx` (`diarioObra`), FOREIGN KEY (`diarioObra`) REFERENCES `diario_obra` (`id`) ON DELETE CASCADE,
+    `descricao` VARCHAR(512),
+    `validacao` CHAR(1),
+    `msg_recusa` LONGTEXT,
+    `is_active` CHAR(1),
+    `created_on` DATETIME,
+    `created_by` INT  , INDEX `created_by__idx` (`created_by`), FOREIGN KEY (`created_by`) REFERENCES `auth_user` (`id`) ON DELETE CASCADE,
+    `modified_on` DATETIME,
+    `modified_by` INT  , INDEX `modified_by__idx` (`modified_by`), FOREIGN KEY (`modified_by`) REFERENCES `auth_user` (`id`) ON DELETE CASCADE,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2017-08-23T21:12:35.241140
+CREATE TABLE `imageens_ocorrencias`(
+    `id` INT AUTO_INCREMENT NOT NULL,
+    `ocorrencia` INT  , INDEX `ocorrencia__idx` (`ocorrencia`), FOREIGN KEY (`ocorrencia`) REFERENCES `ocorrencia` (`id`) ON DELETE CASCADE,
+    `imagem` VARCHAR(512),
+    `diario_obra` INT  , INDEX `diario_obra__idx` (`diario_obra`), FOREIGN KEY (`diario_obra`) REFERENCES `diario_obra` (`id`) ON DELETE CASCADE,
+    `is_active` CHAR(1),
+    `created_on` DATETIME,
+    `created_by` INT  , INDEX `created_by__idx` (`created_by`), FOREIGN KEY (`created_by`) REFERENCES `auth_user` (`id`) ON DELETE CASCADE,
+    `modified_on` DATETIME,
+    `modified_by` INT  , INDEX `modified_by__idx` (`modified_by`), FOREIGN KEY (`modified_by`) REFERENCES `auth_user` (`id`) ON DELETE CASCADE,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2017-08-24T12:20:06.329819
+ALTER TABLE `ocorrencia` ADD `num_ocorrencia` INTEGER;
+success!
+success!
+timestamp: 2017-08-24T20:59:34.364018
+ALTER TABLE `diario_obra` ADD `tempo__tmp` VARCHAR(512);
+success!
+UPDATE `diario_obra` SET `tempo__tmp`=`tempo`;
+success!
+ALTER TABLE `diario_obra` DROP COLUMN `tempo`;
+success!
+ALTER TABLE `diario_obra` ADD `tempo` VARCHAR(512);
+success!
+UPDATE `diario_obra` SET `tempo`=`tempo__tmp`;
+success!
+ALTER TABLE `diario_obra` DROP COLUMN `tempo__tmp`;
+success!
+success!

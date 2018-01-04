@@ -1,0 +1,53 @@
+{{extend 'ui_gestor.html'}}
+<br><br><br><br>
+<style>
+    body{
+        background-color: #67707b;
+    }
+    .container{
+        background-color: rgba(255,255,255,.85);
+        padding: 30px;
+    }
+    .error{
+        color: #ff0000;
+    }
+</style>
+<script>
+    $(document).ready(function() {
+    $('.mdb-select').material_select();
+  });
+</script>
+<div class="container rounded">
+    <h3>{{=response.app or request.application}}</h3><br>
+    {{=form.custom.begin}}
+    <div class="z-depth-1-half rounded" style="padding:20px;">
+
+        <div class="md-form">
+            {{=form.custom.widget.instituicao}}
+            <label for="agendaTelefonica_instituicao">Instiruição</label>
+        </div>
+        <a class="btn btn-indigo" href="{{=URL(a='gestor', c='agenda', f='novaInstituicao')}}">Adicionar Instituição</a>    
+    </div>    
+    <br>
+    <div class="md-form pb-3">
+        {{=form.custom.widget.setor}}
+        <label for="agendaTelefonica_setor">setor</label>
+    </div>
+
+    <div class="md-form pb-3">
+        {{=form.custom.widget.pessoaContato}}
+        <label for="agendaTelefonica_pessoaContato">Pessoa para contato</label>
+    </div>
+
+    <div class="md-form">
+        {{=form.custom.widget.telefone}}
+        <label for="agendaTelefonica_telefone">Telefone</label>
+    </div>
+
+    <div class="md-form pb-3">
+        {{=form.custom.widget.email}}
+        <label for="agendaTelefonica_email">Email</label>
+    </div>
+    {{=form.custom.submit}}
+    {{=form.custom.end}}
+</div>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html class="no-js" lang="{{=T.accepted_language or 'en'}}">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge{{=not request.is_local and ',chrome=1' or ''}}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{=response.title or request.application}}</title>
+    <meta name="application-name" content="{{=request.application}}">
+    <!-- include stylesheets 
+    <link rel="stylesheet" href="{{=URL('static','css/bootstrap.min.css')}}"/>
+    <link rel="stylesheet" href="{{=URL('static','css/mdb.min.css')}}"/>
+    <link rel="stylesheet" href="{{=URL('static','css/style.css')}}"/>-->
+    <link rel="shortcut icon" href="{{=URL('static','images/favicon.png')}}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{{=URL('static','images/favicon.png')}}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--<link rel="stylesheet" href="https://mdbootstrap.com/previews/docs/latest/css/compiled.min.css">-->
+    <link rel="stylesheet" href="{{=URL('static','css/compiled.min.css')}}" />
+    <!-- All JavaScript at the bottom, except for Modernizr which enables
+         HTML5 elements & feature detects -->
+    <script src="{{=URL('static','xjs/modernizr-2.8.3.min.js')}}"></script>
+    <script src="{{=URL('static','js/jquery-3.2.1.min.js')}}"></script>
+    <!--[if lt IE 9]>
+        <script src="{{=URL('static','js/respond-1.4.2.min.js')}}"></script>
+        <![endif]-->
+    <!-- Favicons -->
+    <style>
+        @media screen and (max-width: 575px){
+            #menuApp{
+                left: -10px;
+                top: -10px;
+                height: 100%;
+            }    
+        }
+        
+    </style>
+    
+</head>
+
+<body>
+    <!--[if lt IE 8]><p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p><![endif]-->
+    {{block header}} {{end}}
+    <nav class="mb-1 navbar navbar-expand-lg navbar-dark mdb-color darken-3 fixed-top">
+        <button type="button" class="btn btn-flat waves-effect waves-light" data-toggle="modal" data-target="#fluidModalLeftInfoDemo"
+            style="margin: 0px;">
+            <!--<span class="navbar-toggler-icon fa-lg"></span>-->
+            <i class="fa fa-bars white-text fa-2x" aria-hidden="true"></i>
+        </button>
+        <div class="white-text" style="width:200px;">{{=response.app or 'APPs'}}</div>
+        <div class="pesquisar" style="width: calc(100% - 600px); position: absolute; left: 300px;">
+            {{block pesquisa}}
+            {{end}}
+        </div>
+        <div id="config" class="collapse navbar-collapse" id="navbarSupportedContent-4">
+            <ul class="navbar-nav ml-auto">
+                
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle waves-effect waves-light" id="navbarDropdownMenuLink-4" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        <i class="fa fa-user"></i> {{if auth.user != None:}}{{=auth.user.first_name}}{{else:}} {{='Perfil'}}{{pass}} </a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-cyan" aria-labelledby="navbarDropdownMenuLink-4">
+                        <a class="dropdown-item waves-effect waves-light" href="{{=URL(a='gestor', c='default', f='user', args=['profile'])}}">Configurações</a>
+                        <a class="dropdown-item waves-effect waves-light" href="{{=URL(a='gestor', c='default', f='user', args=['change_password'])}}">Mudar Senha</a>
+                        <a class="dropdown-item waves-effect waves-light" href="{{=URL(a='gestor', c='default', f='user', args=['logout'])}}">Sair</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Main ========================================= 
+
+
+    <div class="modal fade left show" id="fullHeightModalLeft" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-full-height modal-left" role="document"></div>
+
+    </div>-->
+
+
+
+
+    <div class="modal fade left show" id="fluidModalLeftInfoDemo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        data-backdrop="false">
+        <div id="menuApp" class="modal-dialog modal-full-height modal-left modal-notify modal-info" role="document" style="max-width: 240px;">
+            <!--Content-->
+            <div class="modal-content">
+                <!--Header
+                <div class="modal-header mdb-color darken-3">
+                    <p class="heading lead">APPs</p>
+
+                    <button type="button" class="close btn-flat" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" class="white-text">×</span>
+                    </button>
+                </div>-->
+
+                <!--Body-->
+                <div class="modal-body" style="padding-left:0px; padding-right:0px;">
+                    <!--<div class="text-center">
+                        <i class="fa fa-check fa-4x mb-3 animated rotateIn"></i>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit iusto nulla aperiam blanditiis
+                            ad consequatur in dolores culpa, dignissimos, eius non possimus fugiat. Esse ratione fuga, enim,
+                            ab officiis totam.
+                        </p>
+                    </div>-->
+                    <div class="side-nav fixed mdb-color darken-3" style="transform: translateX(0px);">
+                        <div class="modal-header mdb-color darken-3">
+                            <p class="heading lead">{{=response.app or 'APPs'}}</p>
+
+                            <button type="button" class="close btn-flat" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true" class="white-text">×</span>
+                            </button>
+                        </div>
+                        <ul class="custom-scrollbar list-unstyled">
+                            <li>
+                                <ul class="collapsible collapsible-accordion">
+                                    <li>
+                                        <a class="collapsible-header waves-effect arrow-r">
+                                            <i class="fa fa-address-book-o"></i> Agenda
+                                            <i class="fa fa-angle-down rotate-icon"></i>
+                                        </a>
+                                        <div class="collapsible-body">
+                                            <ul>
+                                                <li>
+                                                    <a href="{{=URL(a='gestor', c='agenda', f='index')}}" class="waves-effect">Home</a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{=URL(a='gestor', c='agenda', f='novoContato')}}" class="waves-effect">Novo Contato</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="waves-effect">Lista de Favoritos</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="waves-effect">Lixeira</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <a class="collapsible-header waves-effect arrow-r">
+                                            <i class="fa fa-file-text-o"></i> Bloco de Notas
+                                            <i class="fa fa-angle-down rotate-icon"></i>
+                                        </a>
+                                        <div class="collapsible-body">
+                                            <ul>
+                                                <li>
+                                                    <a href="{{=URL(a='gestor', c='notas', f='index')}}" class="waves-effect">Home</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="waves-effect">Lixeira</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <a class="collapsible-header waves-effect arrow-r">
+                                            <i class="fa fa-star"></i> Favoritos
+                                            <i class="fa fa-angle-down rotate-icon"></i>
+                                        </a>
+                                        <div class="collapsible-body">
+                                            <ul>
+                                                <li>
+                                                    <a href="#" class="waves-effect">Home</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="waves-effect">Lixeira</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <a class="collapsible-header waves-effect arrow-r disabled" style="pointer-events: none; opacity: .5;">
+                                            <i class="fa fa-folder-open-o"></i> Arquivador
+                                            <i class="fa fa-angle-down rotate-icon"></i>
+                                        </a>
+                                        <div class="collapsible-body">
+                                            <ul>
+                                                <li>
+                                                    <a href="#" class="waves-effect">FAQ</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="waves-effect">Write a message</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="waves-effect">FAQ</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="waves-effect">Write a message</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="waves-effect">FAQ</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="waves-effect">Write a message</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="waves-effect">FAQ</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="waves-effect">Write a message</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action" style="margin: 0px;"><i class="fa fa-address-book-o" aria-hidden="true"></i> AGENDA</a>
+                        <a href="#" class="list-group-item list-group-item-action" style="margin: 0px;">BLOCO DE NOTAS</a>
+                        <a href="#" class="list-group-item list-group-item-action" style="margin: 0px;">FAVORITOS</a>
+                        <a href="#" class="list-group-item list-group-item-action disabled" style="margin: 0px;">ARQUIVADOR</a>
+                    </div>-->
+                </div>
+
+                <!--Footer
+                <div class="modal-footer justify-content-center">
+                    <a type="button" class="btn btn-primary-modal waves-effect waves-light">Get it now
+                        <i class="fa fa-diamond ml-1"></i>
+                    </a>
+                    <a type="button" class="btn btn-outline-secondary-modal waves-effect" data-dismiss="modal">No, thanks</a>
+                </div>-->
+            </div>
+            <!--/.Content-->
+        </div>
+    </div>
+
+
+
+
+
+
+    <!-- Begin page content -->
+
+    <div class="">
+        {{block center}} {{include}} {{end}}
+    </div>
+
+    </div>
+
+    <!-- The javascript =============================== 
+    <script src="https://mdbootstrap.com/previews/docs/latest/js/compiled.min.js" ></script>-->
+    
+    <script src="{{=URL('static','js/compiled.min.js')}}"></script>
+    
+    <script>
+
+        // SideNav Initialization
+        /*$(".button-collapse").sideNav();
+        $('.button-collapse').sideNav({
+            edge: 'right', // Choose the horizontal origin
+            closeOnClick: true // Closes side-nav on <a> clicks, useful for Angular/Meteor
+        });
+        new WOW().init();*/
+
+    </script>
+    {{if response.flash:}}
+    <script>
+        toastr.warning('{{=response.flash}}');
+    </script>
+    {{pass}}
+    {{if response.error:}}
+    <script>
+        toastr.warning('{{=response.error}}');
+    </script>
+    {{pass}}
+    {{if session.error:}}
+    <script>
+        toastr.warning('{{=section.error}}');
+    </script>
+    {{pass}}
+    {{if response.success:}}
+    <script>
+        toastr.warning('{{=response.success}}');
+    </script>
+    {{pass}}
+    {{if session.success:}}
+    <script>
+        toastr.warning('{{=section.success}}');
+    </script>
+    {{pass}}
+    <!--<script type="text/javascript" src="{{=URL('static','js/jquery-3.2.1.min.js')}}"></script>
+    <script src="{{=URL('static','js/popper.min.js')}}"></script>
+    <script src="{{=URL('static','js/bootstrap.min.js')}}"></script>
+    <script src="{{=URL('static','js/mdb.min.js')}}"></script>-->
+    <script>
+        $(document).ready(function(){
+            if(window.innerWidth < 992){
+                $("#config").removeClass("collapse");
+                $("#config").removeClass("navbar-collapse");
+            }else{
+                $("#config").addClass("collapse");
+                $("#config").addClass("navbar-collapse");
+            }
+        });
+        $(window).resize(function(){
+            if(window.innerWidth < 992){
+                $("#config").removeClass("collapse");
+                $("#config").removeClass("navbar-collapse");
+            }else{
+                $("#config").addClass("collapse");
+                $("#config").addClass("navbar-collapse");
+            }
+        });
+    </script>
+</body>
+
+</html>
